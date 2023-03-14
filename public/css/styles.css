@@ -8,6 +8,19 @@
     font-family: 'Roboto';
 }
 
-.logo-img {
-    max-width: 50%;
+.navbar{
+    display: block;
+    position: fixed;
+}
+
+.navbar-brand-img {
+    width: 18%;
   }
+
+  .containerFooter {
+    display: block;
+    position: fixed;
+    width: 100vw;
+    bottom: 20px;
+    }
+    
