@@ -21,6 +21,10 @@
   </div>
 </div>
 
+<div class="container mx-auto px-4 py-5">
+  <a href="{{ route('ratings.create', ['movie_id' => $movie['id']]) }}" class="btn btn-primary">Agregar calificación</a>
+</div>
+
 
 
 @endsection
