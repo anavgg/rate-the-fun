@@ -21,7 +21,7 @@
       <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="#" class="nav-link">Movies</a>
+            <a href="{{ route('movies.home') }}" class="nav-link">Movies</a>
           </li>
         </ul>
         <div class="d-flex align-items-center">
