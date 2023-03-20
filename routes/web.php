@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\AuthController;
 
 // Route::get('/', 'MoviesController@index')->name('movies.home');
 // Route::get('/movies/{movie}', 'MoviesController@show')->name('movies.show');
@@ -22,19 +23,13 @@ Route::get('/ratings/create/{movie_id}', 'App\Http\Controllers\RatingController@
 Route::post('/movies/{movie_id}/ratings', [RatingController::class, 'store'])
 ->name('ratings.store');
 
+Auth::routes();
 
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
+Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-
-
-
-// Route::post('/ratings/{movie_id}', [RatingController::class, 'store'])->name('ratings.store');
-
-// Route::post('/ratings/store/{movie_id}', 'App\Http\Controllers\RatingController@store')
-//     ->name('ratings.store');
-
-// Route::post('/store', [RatingController::class, 'store'])->name('ratings.store');
-
-
-
-
+Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware('auth');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
+use App\Models\Movie;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -55,15 +56,22 @@ class RatingController extends Controller
         return redirect()->route('login')->with('error', 'Debes iniciar sesión para calificar una película.');
     }
 
-    $rating = new Rating();
-    $rating->movie_id = $movie_id;
-    $rating->user_id = Auth::user()->id;
-    $rating->rating = $request->rating;
-    $rating->comment = $request->comment;
-    $rating->save();
+     // Verificar que la película exista en la tabla "movies. Aquí dejo de dar error"
+     $movie = Movie::find($request->input('movie_id'));
+     if (!$movie) {
+         return back()->withInput()->withErrors(['movie_id' => 'La película no existe']);
+     }
 
-    return redirect()->route('movies.show', ['id' => $movie_id])
-        ->with('success', 'Calificación agregada exitosamente.');
+
+     $rating = Rating::create([
+        'movie_id' => $movie_id,
+        'user_id' => Auth::user()->id,
+        'rating' => $request->input('rating'),
+        'comment' => $request->input('comment'),
+    ]);
+
+     return redirect()->route('movies.show', ['id' => $movie_id])
+         ->with('success', 'Calificación agregada exitosamente.');
 }
 
     /**
@@ -71,9 +79,19 @@ class RatingController extends Controller
      */
     public function show(Rating $rating)
     {
-        //
-    }
+        $movie = Http::withToken(config('services.tmdb.token'))
+        ->get('https://api.themoviedb.org/3/movie/' .$id)
+        ->json();
 
+    $ratings = Rating::where('movie_id', $id)->orderBy('created_at', 'desc')->get();
+
+    return view('movies.show', [
+        'movie' => $movie,
+        'ratings' => $ratings,
+        'movie_id' => $id
+    ]);
+    }
+    
     /**
      * Show the form for editing the specified resource.
      */

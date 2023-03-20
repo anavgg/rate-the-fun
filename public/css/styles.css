@@ -17,10 +17,21 @@
     width: 18%;
   }
 
+
   .containerFooter {
-    display: block;
-    position: fixed;
-    width: 100vw;
-    bottom: 20px;
+    bottom: 0;
+    width: 100%;
+    margin-top: 4rem;
+  }
+ 
+
+    .link {
+        color: #459C94;
     }
-    
+
+    .link:hover {
+        color: #00FFA1;
+    }
+
+
+

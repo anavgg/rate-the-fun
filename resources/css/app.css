@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.search-input {
+    border: 2px solid #459C94;
+    border-radius: 25px;
+    transition: border-color 0.2s ease-in-out;
+  }
+  
+  .search-input:focus {
+    border-color: #00FFA1;
+    outline: none;
+  }
+
+  .link {
+    color: #459C94;
+  }
