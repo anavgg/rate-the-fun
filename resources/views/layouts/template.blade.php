@@ -10,6 +10,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <livewire:styles>
+
 </head>
 
 
@@ -49,6 +51,8 @@
         border: 3px solid #459C94;
     }
 
+    
+
 </style>
 
   <nav class="navbar navbar-expand-lg navbar-dark">
@@ -66,10 +70,8 @@
                     <a href="{{ route('movies.home') }}" class="nav-link">Movies</a>
                 </li>
             </ul>
-            <div class="d-flex align-items-center">
-                <div class="relative">
-                    <input type="text" class="form-control bg-gray-800 rounded-full  bg-transparent search-input" placeholder="Search">
-                </div>
+            
+            <livewire:search-dropdown>
                
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
@@ -117,5 +119,6 @@
         </div>
     </footer>
 
+    <livewire:scripts>
 </body>
 </html>

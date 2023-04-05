@@ -22,12 +22,7 @@ class RatingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    // public function create()
-    // {
-    //     $movie = Movie::findOrFail($movie_id);
-
-    //     return view('ratings.create', compact('movie'));
-    // }
+ 
 
     public function create($movie_id)
 {
@@ -46,33 +41,41 @@ class RatingController extends Controller
      */
    
      public function store(Request $request, $movie_id)
-{
-    $request->validate([
-        'rating' => 'required|numeric|min:0|max:10',
-        'comment' => 'nullable|string|max:255',
-    ]);
-
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Debes iniciar sesión para calificar una película.');
-    }
-
-     // Verificar que la película exista en la tabla "movies. Aquí dejo de dar error"
-     $movie = Movie::find($request->input('movie_id'));
-     if (!$movie) {
-         return back()->withInput()->withErrors(['movie_id' => 'La película no existe']);
+     {
+         // Validar los datos del formulario
+         $request->validate([
+             'rating' => 'required|numeric|min:0|max:10',
+             'comment' => 'nullable|string|max:255',
+         ]);
+     
+         // Verificar que el usuario esté autenticado
+         if (!Auth::check()) {
+             return redirect()->route('login')->with('error', 'Debes iniciar sesión para calificar una película.');
+         }
+     
+         // Buscar la película en la base de datos
+         $movie = Movie::find($movie_id);
+     
+         // Si no se encuentra la película, mostrar un error
+         if (!$movie) {
+             return back()->withInput()->withErrors(['movie_id' => 'Movie not found']);
+         }
+     
+         // Crear una nueva instancia del modelo Rating con los datos del formulario
+         $rating = new Rating([
+             'movie_id' => $movie_id,
+             'user_id' => Auth::user()->id,
+             'rating' => $request->input('rating'),
+             'comment' => $request->input('comment'),
+         ]);
+     
+         // Guardar el nuevo registro en la base de datos
+         $rating->save();
+     
+         // Redirigir al usuario a la página de la película y mostrar un mensaje de éxito
+         return redirect()->route('movies.show', ['id' => $movie_id])
+              ->with('success', 'Done');
      }
-
-
-     $rating = Rating::create([
-        'movie_id' => $movie_id,
-        'user_id' => Auth::user()->id,
-        'rating' => $request->input('rating'),
-        'comment' => $request->input('comment'),
-    ]);
-
-     return redirect()->route('movies.show', ['id' => $movie_id])
-         ->with('success', 'Calificación agregada exitosamente.');
-}
 
     /**
      * Display the specified resource.
